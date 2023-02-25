@@ -15,7 +15,7 @@ Configuration DTD 3.0//EN"
             jdbc:mysql://localhost:3306/saledb
         </property>
         <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">14042002</property>
+        <property name="hibernate.connection.password">Admin@123</property>
         <property name="hibernate.show_sql">true</property>
     </session-factory>
 </hibernate-configuration>

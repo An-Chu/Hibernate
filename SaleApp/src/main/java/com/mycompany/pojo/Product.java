@@ -21,11 +21,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
  * @author admin
  */
+@Getter
+@Setter
 @Entity
 @Table(name = "product")
 public class Product implements Serializable {
@@ -56,129 +60,9 @@ public class Product implements Serializable {
             )
 
     private Set<Tag> tags = new HashSet<Tag>();
-    /**
-     * @return the id
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * @return the price
-     */
-    public double getPrice() {
-        return price;
-    }
-
-    /**
-     * @param price the price to set
-     */
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    /**
-     * @return the manufacturer
-     */
-    public String getManufacturer() {
-        return manufacturer;
-    }
-
-    /**
-     * @param manufacturer the manufacturer to set
-     */
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
-    /**
-     * @return the image
-     */
-    public String getImage() {
-        return image;
-    }
-
-    /**
-     * @param image the image to set
-     */
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    /**
-     * @return the created_date
-     */
-    public Date getCreated_date() {
-        return createdDate;
-    }
-
-    /**
-     * @param created_date the created_date to set
-     */
-    public void setCreated_date(Date created_date) {
-        this.createdDate = created_date;
-    }
-
-    /**
-     * @return the active
-     */
-    public boolean isActive() {
-        return active;
-    }
-
-    /**
-     * @param active the active to set
-     */
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    /**
-     * @return the category
-     */
-    public Category getCategory() {
-        return category;
-    }
-
-    /**
-     * @param category the category to set
-     */
-    public void setCategory(Category category) {
-        this.category = category;
+    
+    @Override
+    public String toString() {
+        return String.format("%d - %s - %s - %.1f - %s -%s", id, name, description, price, manufacturer, image);
     }
 }

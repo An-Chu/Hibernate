@@ -8,6 +8,7 @@ import com.mycompany.pojo.Category;
 import com.mycompany.pojo.Product;
 import com.mycompany.respository.ProductRepository;
 import com.mycompany.saleapp.HibernateUtil;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Query;
@@ -25,18 +26,19 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public List<Product> getProducts(Map<String, String> params) {
-        try (Session s = HibernateUtil.getFactory().openSession()) {
+        try ( Session s = HibernateUtil.getFactory().openSession()) {
             CriteriaBuilder b = s.getCriteriaBuilder();
             CriteriaQuery<Product> q = b.createQuery(Product.class);
             Root<Product> root = q.from(Product.class);
             q.select(root);
 
+            List<Predicate> predicates = new ArrayList<>();
             // Filter by key word
             String kw = params.get("kw");
             if (kw != null && !kw.isEmpty()) {
-                Predicate p1 = b.like(root.get("name").as(String.class),
+                Predicate p = b.like(root.get("name").as(String.class),
                         String.format("%%%s%%", kw));
-                q.where(p1);
+                predicates.add(p);
             }
 
             // Filter by price
@@ -44,21 +46,21 @@ public class ProductRepositoryImpl implements ProductRepository {
             String toPrice = params.get("toPrice");
 
             if (fromPrice != null && !fromPrice.isEmpty()) {
-                Predicate p2 = b.greaterThanOrEqualTo(root.get("price").as(Double.class),
+                Predicate p = b.greaterThanOrEqualTo(root.get("price").as(Double.class),
                         Double.parseDouble(fromPrice));
-                q.where(p2);
+                predicates.add(p);
             }
 
             if (toPrice != null && !toPrice.isEmpty()) {
-                Predicate p3 = b.lessThanOrEqualTo(root.get("price").as(Double.class), Double.parseDouble(toPrice));
-                q.where(p3);
+                Predicate p = b.lessThanOrEqualTo(root.get("price").as(Double.class), Double.parseDouble(toPrice));
+                predicates.add(p);
             }
 
             // Filter by category name
             String categoryName = params.get("category");
             if (categoryName != null && !categoryName.isEmpty()) {
-                Predicate p5 = b.equal(root.get("category").get("name").as(String.class), categoryName);
-                q.where(p5);
+                Predicate p = b.equal(root.get("category").get("name").as(String.class), categoryName);
+                predicates.add(p);
             }
 
             // Order by id, name, price
@@ -67,8 +69,25 @@ public class ProductRepositoryImpl implements ProductRepository {
                 q.orderBy(b.asc(root.get(order)));
             }
 
+            q.where(predicates.toArray(new Predicate[] {}));
             Query query = s.createQuery(q);
             return query.getResultList();
         }
     }
-}
+
+    @Override
+    public Boolean addProduct(String name, String descreption, Double price, String manufacturer, String image, Boolean active) {
+        try(Session session = HibernateUtil.getFactory().openSession()) {
+            Product p = new Product();
+            p.setName(name);
+            p.setDescription(descreption);
+            p.setPrice(price);
+            p.setManufacturer(manufacturer);
+            p.setImage(image);
+            p.setActive(active);
+            
+            System.out.println(p);
+        }
+        return false;
+    }
+};

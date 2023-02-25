@@ -14,4 +14,10 @@ import java.util.Map;
  */
 public interface ProductRepository {
     List<Product> getProducts(Map<String, String> params); 
+    Boolean addProduct(String name, String descreption, Double price, String manufacturer, String image, Boolean active);
+//    Boolean deleteProduct();
+//    Boolean updateProduct();
+
+    
+    
 }
